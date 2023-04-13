@@ -26,6 +26,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 QCheckBox,
+QPushButton,
 QMainWindow
 )
 
@@ -43,8 +44,10 @@ class Window(QWidget):
         layout.addLayout(self.stacklayout)
         self.input = QLineEdit()
         self.gif = QLabel()
-        self.check = QCheckBox()
-        self.check.setText("Закрыть смену")
+        self.check_c = QPushButton()
+        self.check_c.setText("Закрыть смену")
+        self.check_o = QPushButton()
+        self.check_o.setText("Открыть смену")
         self.label = QLabel
 
         # For tristate: widget.setCheckState(Qt.PartiallyChecked)
@@ -56,32 +59,33 @@ class Window(QWidget):
         self.input.setVisible(True)
         layout.addWidget(self.input, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.gif)
-        layout.addWidget(self.check)
-        self.check.stateChanged.connect(self.stateChange)
+        layout.addWidget(self.check_c)
+        layout.addWidget(self.check_o)
+        self.check_c.clicked.connect(self.closeEmp)
+        self.check_o.clicked.connect(self.openEmp)
+
         self.status = 0
-        self.input.returnPressed.connect(self.get)
 
         # For tristate: widget.setCheckState(Qt.PartiallyChecked)
         # Or: widget.setTriState(True)
 
 
-    def stateChange(self, value):
-        state = Qt.CheckState(value)
-        if state == Qt.CheckState.Checked:
-            self.status = 0
-        elif state == Qt.CheckState.Unchecked:
-            self.status = 1
-    def get(self):
-            text = self.input.text()
-            inp = scan(text)
-            if self.status == 1:
-                print(inp)
-                model.rec_visit(inp[0], SHOP_ID)
-                self.gif.setText("Смена открыта!")
-            else:
-                print(0)
-                model.check_time(inp[0], inp[1])
-                self.gif.setText("Смена закрыта!")
+    def closeEmp(self):
+        self.status = 0
+        print(0)
+        text = self.input.text()
+        inp = scan(text)
+        model.check_time(inp[0], inp[1])
+        self.gif.setText("Смена закрыта!")
+    def openEmp(self):
+        self.status = 1
+        text = self.input.text()
+        inp = scan(text)
+        print(inp)
+        model.rec_visit(inp[0], SHOP_ID)
+        self.gif.setText("Смена открыта!")
+
+
 
 
 app = QApplication(sys.argv)
