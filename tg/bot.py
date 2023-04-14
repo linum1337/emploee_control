@@ -1,7 +1,8 @@
 import telebot
 from telebot import types
 import model
-import qr_generator
+from tg import qr_generator
+
 bot = telebot.TeleBot('6223773161:AAH7f98O6qqqvag65vUlVx6QBS6JwGtjP9M')
 @bot.message_handler(content_types=['text'], commands=['start'])
 def HelloMessage(message):
