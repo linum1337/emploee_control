@@ -50,6 +50,24 @@ def visit_search(id):
         v_list.append(i)
     return v_list
 
+def search_emploee(name):
+    v_list = []
+    mydb = mysql.connector.connect(
+        host="45.146.40.1",
+        user="scanner",
+        password="uNmyc1337_!",
+        database="visitors_test"
+    )
+    mycursor = mydb.cursor()
+    sqlite_insertion = """SELECT id FROM emploeers WHERE name= %s"""
+    insertion_data = ((str(name),))
+    mycursor.execute(sqlite_insertion, insertion_data)
+    myresult = mycursor.fetchall()
+    for i in myresult:
+        print(i)
+        v_list.append(i)
+    return v_list
+
 
 def rec_visit(id, point_id):
     mydb = mysql.connector.connect(
@@ -85,4 +103,3 @@ def check_time(id, name):
     insertion_data = ((str(id), str(pointID), str(spmins)))
     mycursor.execute(sqlite_insertion, insertion_data)
     mydb.commit()
-
